@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     tools {
@@ -35,6 +36,17 @@ pipeline {
                 }
             }
         }
+
+        stage('SonarQube Analysis') {
+            steps {
+                echo 'Starting SonarQube code quality analysis...'
+
+                withSonarQubeEnv('SonarQube-Local') {
+                    bat 'mvn sonar:sonar'
+                }
+            }
+        }
+
     }
 
     post {
@@ -46,4 +58,5 @@ pipeline {
             echo 'CI Pipeline failed. Check the console logs.'
         }
     }
+
 }
